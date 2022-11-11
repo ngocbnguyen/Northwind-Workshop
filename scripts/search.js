@@ -31,8 +31,10 @@ function buildProductCard(data, product) {
 
   const cardText = document.createElement("p");
   cardText.className = "card-text";
-  cardText.innerText = `Price: ${parseFloat(data.unitPrice).toFixed(2)}`;
+  cardText.innerText = `Price: $${parseFloat(data.unitPrice).toFixed(2)}
+  In Stock: ${data.unitsInStock}`;
   cardBody.appendChild(cardText);
+
 }
 window.onload = () => {
   loadAllProducts();
