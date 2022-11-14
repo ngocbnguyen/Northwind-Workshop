@@ -1,4 +1,21 @@
 "use strict";
+const categoryBtn = document.getElementById("categoryBtn");
+const categoryList = document.getElementById("categoryList");
+
+function loadCategoryList() {
+  let option = new Option("Select a Category");
+  categoryList.appendChild(option);
+  fetch("http://localhost:8081/api/categories")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      data.forEach((data) => {
+        let categoryOption = document.createElement("option");
+        categoryOption.innerText = `${data.name}`;
+        categoryList.appendChild(categoryOption);
+      });
+    });
+}
 
 function loadAllProducts() {
   fetch("http://localhost:8081/api/products")
@@ -32,10 +49,13 @@ function buildProductCard(data, product) {
   const cardText = document.createElement("p");
   cardText.className = "card-text";
   cardText.innerText = `Price: $${parseFloat(data.unitPrice).toFixed(2)}
-  In Stock: ${data.unitsInStock}`;
+  There are ${data.unitsInStock} items in stock`;
   cardBody.appendChild(cardText);
-
+  if (data.unitsInStock == 0) {
+    cardText.innerText = `Price: $${parseFloat(data.unitPrice).toFixed(2)}
+    This item is out of stock!`;
+  }
 }
 window.onload = () => {
-  loadAllProducts();
+  loadCategoryList();
 };
